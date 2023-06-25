@@ -1,0 +1,8 @@
+CHECK_EXISTING_NAME = "SELECT * FROM medios WHERE nombre = '%s'"
+CHECK_EXISTING_URL = "SELECT * FROM medios WHERE url = '%s'"
+CHECK_EXISTING_LOC = "SELECT * FROM ubicaciones WHERE ciudad = '%s' AND pais = '%s' AND region = '%s' AND continente = '%s'"
+INSERT_MEDIA_OUTLET = "INSERT INTO medios (nombre, ubicacion, año, url) VALUES ('%s', '%i', '%i', '%s')"
+INSERT_MEDIA_OUTLET_WY = "INSERT INTO medios (nombre, ubicacion, url) VALUES ('%s', '%s', '%s')"
+INSERT_MEDIA_OUTLET_WU = "INSERT INTO medios (nombre, año, url) VALUES ('%s', '%i', '%s')"
+INSERT_MEDIA_OUTLET_WU_WY = "INSERT INTO medios (nombre, url) VALUES ('%s', '%s')"
+INSERT_LOCATION = "INSERT INTO ubicaciones (ciudad, pais, region, continente) VALUES ('%s', '%s', '%s', '%s')"
