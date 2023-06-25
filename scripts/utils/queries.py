@@ -6,3 +6,5 @@ INSERT_MEDIA_OUTLET_WY = "INSERT INTO medios (nombre, ubicacion, url) VALUES ('%
 INSERT_MEDIA_OUTLET_WU = "INSERT INTO medios (nombre, año, url) VALUES ('%s', '%i', '%s')"
 INSERT_MEDIA_OUTLET_WU_WY = "INSERT INTO medios (nombre, url) VALUES ('%s', '%s')"
 INSERT_LOCATION = "INSERT INTO ubicaciones (ciudad, pais, region, continente) VALUES ('%s', '%s', '%s', '%s')"
+INSERT_COVERAGE = "INSERT INTO coberturasMedios (medio, cobertura) VALUES ('%i', '%i')"
+INSERT_EXAMPLE = "INSERT INTO ejemplos (medio, url, xpath_fecha, xpath_titulo, xpath_desc) VALUES ('%i', '%s', '%s', '%s', '%s')"

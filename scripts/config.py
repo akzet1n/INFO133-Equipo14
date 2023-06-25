@@ -13,3 +13,4 @@ try:
     cursor = db.cursor()
 except:
     db = None
+    cursor = None

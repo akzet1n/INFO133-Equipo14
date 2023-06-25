@@ -15,3 +15,11 @@ def sanitize_year(year):
         return None
     else:
         return int(year)
+
+def sanitize_coverage(coverage):
+    tmp = coverage.split(",")
+    for i in range(len(tmp)):
+        tmp[i] = int(tmp[i])
+        if tmp[i] <= 0 or tmp[i] >= 4:
+            return None
+    return tmp
