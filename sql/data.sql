@@ -1,6 +1,6 @@
 -- MariaDB dump 10.19  Distrib 10.5.19-MariaDB, for debian-linux-gnu (x86_64)
 --
--- Host: localhost    Database: test123
+-- Host: localhost    Database: medios_de_prensa
 -- ------------------------------------------------------
 -- Server version	10.5.19-MariaDB-0+deb11u2
 
@@ -16,58 +16,83 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `categorias`
+-- Table structure for table `categoriasMedios`
 --
 
-DROP TABLE IF EXISTS `categorias`;
+DROP TABLE IF EXISTS `categoriasMedios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `categorias` (
+CREATE TABLE `categoriasMedios` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `medio` int(11) DEFAULT NULL,
-  `nombre` varchar(100) DEFAULT NULL,
+  `nombre` int(11) DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
   `ejemplo` varchar(255) DEFAULT NULL,
   `xpath` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `medio` (`medio`),
-  CONSTRAINT `categorias_ibfk_1` FOREIGN KEY (`medio`) REFERENCES `medios` (`id`)
+  KEY `nombre` (`nombre`),
+  CONSTRAINT `categoriasMedios_ibfk_1` FOREIGN KEY (`medio`) REFERENCES `medios` (`id`),
+  CONSTRAINT `categoriasMedios_ibfk_2` FOREIGN KEY (`nombre`) REFERENCES `datosCategorias` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `categorias`
+-- Dumping data for table `categoriasMedios`
 --
 
-LOCK TABLES `categorias` WRITE;
-/*!40000 ALTER TABLE `categorias` DISABLE KEYS */;
-/*!40000 ALTER TABLE `categorias` ENABLE KEYS */;
+LOCK TABLES `categoriasMedios` WRITE;
+/*!40000 ALTER TABLE `categoriasMedios` DISABLE KEYS */;
+/*!40000 ALTER TABLE `categoriasMedios` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `coberturasMedio`
+-- Table structure for table `coberturasMedios`
 --
 
-DROP TABLE IF EXISTS `coberturasMedio`;
+DROP TABLE IF EXISTS `coberturasMedios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `coberturasMedio` (
+CREATE TABLE `coberturasMedios` (
   `medio` int(11) NOT NULL,
   `cobertura` int(11) NOT NULL,
   PRIMARY KEY (`medio`,`cobertura`),
   KEY `cobertura` (`cobertura`),
-  CONSTRAINT `coberturasMedio_ibfk_1` FOREIGN KEY (`medio`) REFERENCES `medios` (`id`),
-  CONSTRAINT `coberturasMedio_ibfk_2` FOREIGN KEY (`cobertura`) REFERENCES `datosCoberturas` (`id`)
+  CONSTRAINT `coberturasMedios_ibfk_1` FOREIGN KEY (`medio`) REFERENCES `medios` (`id`),
+  CONSTRAINT `coberturasMedios_ibfk_2` FOREIGN KEY (`cobertura`) REFERENCES `datosCoberturas` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `coberturasMedio`
+-- Dumping data for table `coberturasMedios`
 --
 
-LOCK TABLES `coberturasMedio` WRITE;
-/*!40000 ALTER TABLE `coberturasMedio` DISABLE KEYS */;
-/*!40000 ALTER TABLE `coberturasMedio` ENABLE KEYS */;
+LOCK TABLES `coberturasMedios` WRITE;
+/*!40000 ALTER TABLE `coberturasMedios` DISABLE KEYS */;
+/*!40000 ALTER TABLE `coberturasMedios` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `datosCategorias`
+--
+
+DROP TABLE IF EXISTS `datosCategorias`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `datosCategorias` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `datosCategorias`
+--
+
+LOCK TABLES `datosCategorias` WRITE;
+/*!40000 ALTER TABLE `datosCategorias` DISABLE KEYS */;
+/*!40000 ALTER TABLE `datosCategorias` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -81,7 +106,7 @@ CREATE TABLE `datosCoberturas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,6 +115,7 @@ CREATE TABLE `datosCoberturas` (
 
 LOCK TABLES `datosCoberturas` WRITE;
 /*!40000 ALTER TABLE `datosCoberturas` DISABLE KEYS */;
+INSERT INTO `datosCoberturas` VALUES (1,'Local'),(2,'Nacional'),(3,'Internacional');
 /*!40000 ALTER TABLE `datosCoberturas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,7 +156,7 @@ CREATE TABLE `datosRedes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -139,6 +165,7 @@ CREATE TABLE `datosRedes` (
 
 LOCK TABLES `datosRedes` WRITE;
 /*!40000 ALTER TABLE `datosRedes` DISABLE KEYS */;
+INSERT INTO `datosRedes` VALUES (1,'Facebook'),(2,'Instagram'),(3,'Twitter');
 /*!40000 ALTER TABLE `datosRedes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -291,4 +318,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-24  0:03:26
+-- Dump completed on 2023-06-24 23:08:20
