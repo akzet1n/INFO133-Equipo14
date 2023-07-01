@@ -111,6 +111,38 @@ def insert_redes_info(medio, data) -> None:
         if network["hasNetwork"]:
             cursor.execute(utils.queries.INSERT_NETWORK % (medio, network["id"], network["handle"], network["followers"]))
 
+def get_fundadores_info() -> list:
+    founders = []
+    num_founders = int(input("Ingrese el número de fundadores que tiene el medio de prensa: "))
+    for i in range(num_founders):
+        founder = {}
+        founder["name"] = str(input("Ingrese el nombre del fundador: "))
+        if not utils.helpers.check_empty(founder["name"]):
+            raise utils.exceptions.EmptyError
+        founder["surname"] = str(input("Ingrese el apellido del fundador: "))
+        if not utils.helpers.check_empty(founder["surname"]):
+            raise utils.exceptions.EmptyError
+        founder["nationality"] = str(input("Ingrese la nacionalidad del fundador (vacío en caso de no sabrelo): "))
+        founder["dob"] = str(input("Ingrese la fecha de nacimiento del fundador (DD-MM-YYY o vacío en caso de no saberlo): "))
+        founders.append(founder)
+    return founders
+
+def insert_fundadores_info(medio, data) -> None:
+    for founder in data:
+        cursor.execute(utils.queries.CHECK_EXISTING_FOUNDER % (founder["name"], founder["surname"]))
+        res = cursor.fetchone()
+        if res is None:
+            if founder["nationality"] == "" and founder["dob"] == "":
+                cursor.execute(utils.queries.INSERT_FOUNDER_WN_WD % (founder["name"], founder["surname"]))
+            elif founder["nationality"] == "" and founder["dob"] != "":
+                cursor.execute(utils.queries.INSERT_FOUNDER_WN % (founder["name"], founder["surname"], founder["dob"]))
+            elif founder["dob"] == "" and founder["nationality"] != "":
+                cursor.execute(utils.queries.INSERT_FOUNDER_WD % (founder["name"], founder["surname"], founder["nationality"]))
+            else:
+                cursor.execute(utils.queries.INSERT_FOUNDER % (founder["name"], founder["surname"], founder["nationality"], founder["dob"]))
+        founder_id = cursor.lastrowid if res is None else res[0]
+        cursor.execute(utils.queries.INSERT_MEDIA_FOUNDERS % (medio, founder_id))
+
 if __name__ == "__main__":
     if db is None:
         print(">> No se ha podido conectar a la base de datos, verifica las credenciales en config.py")
@@ -123,4 +155,6 @@ if __name__ == "__main__":
     insert_ejemplo_info(medio, url, fecha, titulo, desc)
     redes = get_redes_info()
     insert_redes_info(medio, redes)
+    fundadores = get_fundadores_info()
+    insert_fundadores_info(medio, fundadores)
     db.commit()
