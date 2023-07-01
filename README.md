@@ -22,4 +22,4 @@ País: República Dominicana
 - Crear una base de datos en el servidor MySQL
 - Importar la estructura de la base de datos `sudo mysql -u USUARIO -p NOMBRE_DB < sql/data.sql`
 - Editar el archivo `config.py` con la información respectiva de la base de datos
-- Ejecutar el script `scripts/insert.py`
+- Ejecutar algún script presente en la carpeta `scripts`
