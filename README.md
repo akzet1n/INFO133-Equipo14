@@ -1,10 +1,10 @@
 # INFO133-Equipo14
 
-> Parte A del proyecto de la asignatura INFO133 - Base de Datos
+Parte A del proyecto de la asignatura INFO133 - Base de Datos
 
-> Profesor responsable: Matthieu Vernier
+Profesor responsable: Matthieu Vernier
 
-> País: República Dominicana
+País: República Dominicana
 
 # Integrantes
 
