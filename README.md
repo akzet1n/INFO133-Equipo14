@@ -12,6 +12,6 @@
 - Activar el ambiente virtual `source env/bin/activate`
 - Instalar los paquetes necesarios `pip3 install -r requirements.txt`
 - Crear una base de datos en el servidor MySQL
-- Ingresar al directorio `sql` para importar la estructura de la base de datos `sudo mysql -u USUARIO -p NOMBRE_DB < data.sql`.
-- Una vez insertada la estructura de la base de datos, editar el archivo `config.py` con los respectivos datos de la base de datos.
-- Con todo eso listo, sólo queda ejecutar el archivo `scripts/insert.py`
+- Importar la estructura de la base de datos `sudo mysql -u USUARIO -p NOMBRE_DB < sql/data.sql`.
+- Editar el archivo `config.py` con la información respectiva de la base de datos.
+- Ejecutar el script `scripts/insert.py`
