@@ -1,7 +1,7 @@
 # INFO133-Equipo14
 
-Parte A del proyecto de la asignatura INFO133 - Base de Datos
-Profesor responsable: Matthieu Vernier
+> Parte A del proyecto de la asignatura INFO133 - Base de Datos
+> Profesor responsable: Matthieu Vernier
 
 - Daniel Matamala
 - Esteban Torres
