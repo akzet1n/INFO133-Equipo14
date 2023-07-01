@@ -4,6 +4,10 @@
 
 > Profesor responsable: Matthieu Vernier
 
+> País: República Dominicana
+
+# Integrantes
+
 - Daniel Matamala
 - Esteban Torres
 - Roberto Videla
