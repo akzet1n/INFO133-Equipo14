@@ -5,26 +5,26 @@ import utils.queries
 from config import db, cursor
 
 def get_medios_info() -> str:
-    nombre = str(input("Ingresa el nombre del medio de prensa: "))
+    nombre = str(input(">> Ingresa el nombre del medio de prensa: "))
     if not utils.helpers.check_empty(nombre):
         raise utils.exceptions.EmptyError
-    año = utils.helpers.sanitize_year(str(input("Ingresa el año de fundación del medio de prensa (vacío en caso de no saberlo): ")))
-    url = str(input("Ingresa el sitio web del medio de prensa: "))
+    año = utils.helpers.sanitize_year(str(input(">> Ingresa el año de fundación del medio (vacío en caso de no saberlo): ")))
+    url = str(input(">> Ingresa el sitio web del medio: "))
     if not utils.helpers.check_empty(url):
         raise utils.exceptions.EmptyError
     return nombre, año, url
 
 def get_ubicaciones_info() -> str:
-    ciudad = str(input("Ingresa el nombre de la ciudad: "))
+    ciudad = str(input(">> Ingresa el nombre de la ciudad: "))
     if not utils.helpers.check_empty(ciudad):
         raise utils.exceptions.EmptyError
-    pais = str(input("Ingresa el nombre del pais: "))
+    pais = str(input(">> Ingresa el nombre del pais: "))
     if not utils.helpers.check_empty(pais):
         raise utils.exceptions.EmptyError
-    region = str(input("Ingresa el nombre de la región: "))
+    region = str(input(">> Ingresa el nombre de la región: "))
     if not utils.helpers.check_empty(region):
         raise utils.exceptions.EmptyError
-    continente = str(input("Ingresa el nombre del continente: "))
+    continente = str(input(">> Ingresa el nombre del continente: "))
     if not utils.helpers.check_empty(continente):
         raise utils.exceptions.EmptyError
     return ciudad, pais, region, continente
@@ -41,7 +41,7 @@ def insert_medios_ubicaciones_info(nombre: str, año: str, url: str) -> int:
     if res_1 is not None and res_2 is not None:
         raise utils.exceptions.MediaError
     else:
-        ubi = int(input("Existe una ubicación para el medio de prensa? (0 no, 1 si): "))
+        ubi = int(input(">> Existe una ubicación para el medio? (0 NO, 1 SI): "))
         if ubi:
             ciudad, pais, region, continente = get_ubicaciones_info()
             cursor.execute(utils.queries.CHECK_EXISTING_LOC % (ciudad, pais, region, continente))
@@ -61,28 +61,33 @@ def insert_medios_ubicaciones_info(nombre: str, año: str, url: str) -> int:
         return cursor.lastrowid
 
 def get_coberturas_info() -> list:
-    print("Las coberturas disponibles para los medios de prensa son:")
-    print("(1) Local - (2) Nacional - (3) Internacional")
-    coberturas = utils.helpers.sanitize_coverage(str(input("Qué coberturas tiene el medio de prensa? Ingresa los valores separados por comas (1, 2, 3): ")))
-    if coberturas is None:
-        raise utils.exceptions.CoberturasError
+    coberturas = []
+    local = int(input(">> El medio tiene cobertura Local? (0 NO, 1 SI): "))
+    if local:
+        coberturas.append(1)
+    nacional = int(input(">> El medio tiene cobertura Nacional? (0 NO, 1 SI): "))
+    if nacional:
+        coberturas.append(2)
+    internacional = int(input(">> El medio tiene cobertura Internacional? (0 NO, 1 SI): "))
+    if internacional:
+        coberturas.append(3)
     return coberturas
 
-def insert_coberturas_info(medio, coberturas) -> None:
+def insert_coberturas_info(medio: int, coberturas: list) -> None:
     for i in coberturas:
         cursor.execute(utils.queries.INSERT_COVERAGE % (medio, i))
 
 def get_ejemplo_info() -> str:
-    url = str(input("Ingresa la URL de la noticia de ejemplo: "))
+    url = str(input(">> Ingresa la dirección URL de la noticia de ejemplo: "))
     if not utils.helpers.check_empty(url):
         raise utils.exceptions.EmptyError
-    fecha = str(input("Ingresa el XPATH de la fecha de la noticia: "))
+    fecha = str(input(">> Ingresa la expresión XPATH de la fecha de la noticia: "))
     if not utils.helpers.check_empty(fecha):
         raise utils.exceptions.EmptyError
-    titulo = str(input("Ingresa el XPATH del titulo de la noticia: "))
+    titulo = str(input(">> Ingresa la expresión XPATH del titulo de la noticia: "))
     if not utils.helpers.check_empty(titulo):
         raise utils.exceptions.EmptyError
-    desc = str(input("Ingresa el XPATH de la descripción de la noticia: "))
+    desc = str(input(">> Ingresa la expresión XPATH de la descripción de la noticia: "))
     if not utils.helpers.check_empty(desc):
         raise utils.exceptions.EmptyError
     return url, fecha, titulo, desc
@@ -95,12 +100,12 @@ def get_redes_info() -> list:
              { "id": 2, "name": "Instagram", "hasNetwork": False },
              { "id": 3, "name": "Twitter", "hasNetwork": False } ]
     for i in range(3):
-        has_social = int(input("El medio de prensa tiene %s? (0 no, 1 si): " % data[i]["name"]))
+        has_social = int(input(">> El medio tiene %s? (0 NO, 1 SI): " % data[i]["name"]))
         if has_social:
-            handle = str(input("Ingrese la cuenta de %s del medio de prensa: " % data[i]["name"]))
+            handle = str(input(">> Ingrese la cuenta de %s del medio: " % data[i]["name"]))
             if not utils.helpers.check_empty(handle):
                 raise utils.exceptions.EmptyError
-            followers = int(input("Ingrese la cantidad de seguidores de la red social: "))
+            followers = int(input(">> Ingrese la cantidad de seguidores de la red social: "))
             data[i]["handle"] = handle
             data[i]["followers"] = followers
             data[i]["hasNetwork"] = True
@@ -113,17 +118,17 @@ def insert_redes_info(medio, data) -> None:
 
 def get_fundadores_info() -> list:
     founders = []
-    num_founders = int(input("Ingrese el número de fundadores que tiene el medio de prensa: "))
+    num_founders = int(input(">> Ingrese el número de fundadores que tiene el medio: "))
     for i in range(num_founders):
         founder = {}
-        founder["name"] = str(input("Ingrese el nombre del fundador: "))
+        founder["name"] = str(input(">> Ingrese el nombre del fundador #%s: " % str(i + 1)))
         if not utils.helpers.check_empty(founder["name"]):
             raise utils.exceptions.EmptyError
-        founder["surname"] = str(input("Ingrese el apellido del fundador: "))
+        founder["surname"] = str(input(">> Ingrese el apellido del fundador #%s: " % str(i + 1)))
         if not utils.helpers.check_empty(founder["surname"]):
             raise utils.exceptions.EmptyError
-        founder["nationality"] = str(input("Ingrese la nacionalidad del fundador (vacío en caso de no sabrelo): "))
-        founder["dob"] = str(input("Ingrese la fecha de nacimiento del fundador (DD-MM-YYY o vacío en caso de no saberlo): "))
+        founder["nationality"] = str(input(">> Ingrese la nacionalidad del fundador #%s (vacío en caso de no sabrelo): " % str(i + 1)))
+        founder["dob"] = str(input(">> Ingrese la fecha de nacimiento del fundador #%s (DD-MM-YYY o vacío en caso de no saberlo): " % str(i + 1)))
         founders.append(founder)
     return founders
 
@@ -142,11 +147,42 @@ def insert_fundadores_info(medio, data) -> None:
                 cursor.execute(utils.queries.INSERT_FOUNDER % (founder["name"], founder["surname"], founder["nationality"], founder["dob"]))
         founder_id = cursor.lastrowid if res is None else res[0]
         cursor.execute(utils.queries.INSERT_MEDIA_FOUNDERS % (medio, founder_id))
+    
+def get_categorias_info() -> list:
+    categorias = []
+    num_categorias = int(input(">> Ingrese el número de categorías a ingresar al medio: "))
+    for i in range(num_categorias):
+        categoria = {}
+        categoria["name"] = str(input(">> Ingrese el nombre de la categoría #%s: " % str(i + 1)))
+        if not utils.helpers.check_empty(categoria["name"]):
+            raise utils.exceptions.EmptyError
+        categoria["url"] = str(input(">> Ingrese la dirección URL de la categoría #%s: " % str(i + 1)))
+        if not utils.helpers.check_empty(categoria["url"]):
+            raise utils.exceptions.EmptyError
+        categoria["ejemplo"] = str(input(">> Ingrese la dirección URL de una página de la categoría #%s: " % str(i + 1)))
+        if not utils.helpers.check_empty(categoria["ejemplo"]):
+            raise utils.exceptions.EmptyError
+        categoria["xpath"] = str(input(">> Ingrese la expresión XPATH para obtener los enlaces de la categoría #%s: " % str(i + 1)))
+        if not utils.helpers.check_empty(categoria["xpath"]):
+            raise utils.exceptions.EmptyError
+        categorias.append(categoria)
+    return categorias
+
+def insert_categorias_info(medio, data) -> None:
+    for categoria in data:
+        cursor.execute(utils.queries.CHECK_EXISTING_CATEGORY % (categoria["name"]))
+        res = cursor.fetchone()
+        if res is None:
+            cursor.execute(utils.queries.INSERT_CATEGORY % (categoria["name"]))
+        cat_id = cursor.lastrowid if res is None else res[0]
+        cursor.execute(utils.queries.INSERT_MEDIA_CATEGORY % (medio, cat_id, categoria["url"], categoria["ejemplo"], categoria["xpath"]))
 
 if __name__ == "__main__":
+
     if db is None:
         print(">> No se ha podido conectar a la base de datos, verifica las credenciales en config.py")
         sys.exit(1)
+
     nombre, año, url = get_medios_info()
     medio = insert_medios_ubicaciones_info(nombre, año, url)
     coberturas = get_coberturas_info()
@@ -157,4 +193,8 @@ if __name__ == "__main__":
     insert_redes_info(medio, redes)
     fundadores = get_fundadores_info()
     insert_fundadores_info(medio, fundadores)
+    categorias = get_categorias_info()
+    insert_categorias_info(medio, categorias)
+
     db.commit()
+    db.close()
