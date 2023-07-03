@@ -179,22 +179,22 @@ def insert_categorias_info(medio, data) -> None:
 
 if __name__ == "__main__":
 
-    if db is None:
-        print(">> No se ha podido conectar a la base de datos, verifica las credenciales en config.py")
+    if not db:
+        print(">> No se ha podido conectar a la base de datos. Por favor, verifica tus credenciales en config.py")
         sys.exit(1)
 
     nombre, año, url = get_medios_info()
     medio = insert_medios_ubicaciones_info(nombre, año, url)
     coberturas = get_coberturas_info()
     insert_coberturas_info(medio, coberturas)
-    url, fecha, titulo, desc = get_ejemplo_info()
-    insert_ejemplo_info(medio, url, fecha, titulo, desc)
-    redes = get_redes_info()
-    insert_redes_info(medio, redes)
     fundadores = get_fundadores_info()
     insert_fundadores_info(medio, fundadores)
+    redes = get_redes_info()
+    insert_redes_info(medio, redes)
     categorias = get_categorias_info()
     insert_categorias_info(medio, categorias)
-
+    url, fecha, titulo, desc = get_ejemplo_info()
+    insert_ejemplo_info(medio, url, fecha, titulo, desc)
+    
     db.commit()
     db.close()
