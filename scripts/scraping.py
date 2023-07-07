@@ -25,6 +25,9 @@ if __name__ == "__main__":
         title = response.html.xpath(row[1])[0].text
         date = response.html.xpath(row[0])[0]
         print(">> Título: {0}".format(title))
-        print(">> Fecha: {0}".format(date))
+        if type(date) is str:
+            print(">> Fecha: {0}".format(date))    
+        else:
+            print(">> Fecha: {0}".format(date.text.strip()))
     else:
         print(">> No hay resultados ")
