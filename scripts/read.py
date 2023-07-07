@@ -1,5 +1,6 @@
 import utils.helpers
 import utils.queries as queries
+import sys
 from config import db, cursor
 
 data = [ { "id": 1, "msg": "Cúal es el XPATH para leer la fecha de la noticia de un medio?", "sql": queries.XPATH_DATE, "func": 1},
@@ -16,6 +17,9 @@ data = [ { "id": 1, "msg": "Cúal es el XPATH para leer la fecha de la noticia d
          { "id": 12, "msg": "Cuál es el promedio de seguidores por cada red social?", "sql": queries.MEDIA_AVERAGE, "func": 2} ]
 
 if __name__ == "__main__":
+    if not db:
+        print(">> No se ha podido conectar a la base de datos. Por favor, verifica tus credenciales en config.py")
+        sys.exit(1)
     for query in data:
         print("[{0}] {1}".format(query["id"], query["msg"]))
     choice = int(input(">> Ingrese una sentencia SQL a consultar: "))

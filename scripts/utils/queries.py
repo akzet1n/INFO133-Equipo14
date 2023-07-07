@@ -30,3 +30,4 @@ COUNT_MEDIA_FOUNDERS = "SELECT COUNT(*) FROM fundadoresMedios fm JOIN datosFunda
 COUNT_MEDIA_LOCATIONS = "SELECT COUNT(*) FROM medios m JOIN ubicaciones u ON m.ubicacion = u.id WHERE u.ciudad = '%s' and u.pais = '%s'"
 MEDIA_OVER_50K = "SELECT COUNT(*) FROM redes r JOIN datosRedes dr ON r.red = dr.id WHERE dr.nombre = '%s' AND r.seguidores >= 50000"
 MEDIA_AVERAGE = "SELECT dr.nombre, AVG(r.seguidores) FROM datosRedes dr JOIN redes r ON dr.id = r.red GROUP BY dr.nombre"
+CRAWLING = "SELECT m.url, cm.ejemplo, cm.xpath FROM categoriasMedios cm JOIN medios m ON cm.medio = m.id JOIN datosCategorias dc ON cm.nombre = dc.id WHERE m.nombre = '%s' AND dc.nombre = '%s'"
