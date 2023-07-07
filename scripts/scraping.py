@@ -1,5 +1,4 @@
 import sys
-import time
 import utils.queries
 import utils.helpers
 from utils.user_agents import random_agent
@@ -16,17 +15,16 @@ if __name__ == "__main__":
     nombre = str(input(">> Ingrese el nombre del medio de prensa: "))
     if not utils.helpers.check_empty(nombre):
         raise utils.exceptions.EmptyError
-    categoria = str(input(">> Ingrese el nombre de la categoría: "))
-    if not utils.helpers.check_empty(categoria):
+    url = str(input(">> Ingrese la URL de la noticia: "))
+    if not utils.helpers.check_empty(url):
         raise utils.exceptions.EmptyError
-    cursor.execute(utils.queries.CRAWLING % (nombre, categoria))
-    res = cursor.fetchone()
-    if res:
-        response = session.get(res[1], headers=headers)
-        all_urls = response.html.xpath(res[2])
-        for url in all_urls:
-            article_url = res[0] + url
-            print(">> {0}".format(article_url))
-            time.sleep(2)
+    cursor.execute(utils.queries.SCRAPING % nombre)
+    row = cursor.fetchone()
+    if row:
+        response = session.get(url, headers=headers)
+        title = response.html.xpath(row[1])[0].text
+        date = response.html.xpath(row[0])[0]
+        print(">> Título: {0}".format(title))
+        print(">> Fecha: {0}".format(date))
     else:
-        print(">> No hay resultados")
+        print(">> No hay resultados ")
