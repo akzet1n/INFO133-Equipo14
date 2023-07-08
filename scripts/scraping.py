@@ -22,12 +22,22 @@ if __name__ == "__main__":
     row = cursor.fetchone()
     if row:
         response = session.get(url, headers=headers)
-        title = response.html.xpath(row[1])[0].text
-        date = response.html.xpath(row[0])[0]
-        print(">> Título: {0}".format(title))
-        if type(date) is str:
-            print(">> Fecha: {0}".format(date))    
+        title = response.html.xpath(row[1])
+        date = response.html.xpath(row[0])
+        if title:
+            title = title[0].text
+            print(">> Título: {0}".format(title))
         else:
-            print(">> Fecha: {0}".format(date.text.strip()))
+            print(">> No se pudo obtener el título")
+        if date:
+            if type(date) == str:
+                print(">> Fecha: {0}".format(date))
+            else:
+                if type(date[0]) == str:
+                    print(">> Fecha: {0}".format(date[0]))
+                else:
+                    print(">> Fecha: {0}".format(date[0].text))
+        else:
+            print(">> No se pudo obtener la fecha")
     else:
-        print(">> No hay resultados ")
+        print(">> No hay resultados")
